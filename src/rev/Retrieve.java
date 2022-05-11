@@ -1,17 +1,17 @@
 package rev;
 
 import java.io.*;
-import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.Scanner;
 
 
 public class Retrieve {
 
-	private ArrayList<String> memory = new ArrayList<>();
+	private LinkedList<String> memory = new LinkedList<>();
 	
-	private File output = new File("C:\\Users\\Peter Leonard\\Documents\\Java\\RevisionHelper\\src\\rev\\memory.txt");
+	private File output = new File("C:\\Users\\Peter Leonard\\OneDrive\\Documents\\java\\RevisionHelper\\src\\rev\\memory.txt");
 	
-	public ArrayList retrieve(){
+	public LinkedList retrieve(){
 		try {
 			Scanner sc = new Scanner(output);
 			
@@ -26,7 +26,7 @@ public class Retrieve {
 		return memory;
 	}
 	
-	public void write(ArrayList<String> al) {
+	public void write(LinkedList<String> al) {
 		 try {
 			FileWriter fw = new FileWriter(output);
 			
