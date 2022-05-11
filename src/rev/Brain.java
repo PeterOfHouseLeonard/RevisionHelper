@@ -22,7 +22,7 @@ public class Brain {
 	
 	public static void main(String[] args) {
 		
-		char choice;
+		String choice;
 		
 		for(String s:memory) {
 			if(s.equals("deep"))
@@ -35,22 +35,9 @@ public class Brain {
 		
 		System.out.println("Today is "+today);
 		
-		
+		printOptions();
 		while(working) {
-			System.out.println("Choose:");
-			System.out.println("1. Display Memory");
-			System.out.println("2. Quit");
-			System.out.println("3. Submit");
-			System.out.println("4. Remove");
-			System.out.println("5. Edit");
-			System.out.println("6. Revised");
-			System.out.println("7. Choose at random");
-			System.out.println("8. Iterate Loop");
-			System.out.println("10. View Deep Storage");
-			System.out.println("11. Move to Deep Storage");
-			System.out.println("12. Move to Main Storage");
-			
-			choice = sc.nextInt();
+			choice = sc.next();
 			System.out.println();
 		
 			select(choice);
@@ -64,15 +51,49 @@ public class Brain {
 		ret.write(out);
 	}
 
-	private static void select(int choice) {
+	private static void printOptions() {
+		System.out.println("Choose:");
+		System.out.println("0. Display Options");
+		System.out.println("1. Display Memory");
+		System.out.println("2. Quit");
+		System.out.println("3. Submit");
+		System.out.println("4. Remove");
+		System.out.println("5. Edit");
+		System.out.println("6. Revised");
+		System.out.println("7. Choose at random");
+		System.out.println("8. Iterate Loop");
+		System.out.println("9. Display Oldest Memory");
+		System.out.println("10. View Deep Storage");
+		System.out.println("11. Move to Deep Storage");
+		System.out.println("12. Move to Main Storage");
+	}
+
+	private static void select(String choice) {
 		switch(choice) {
-		case 1: //print memory
+		case "0":
+		case "options":
+		case "o":
+		case "op":
+		case "help":
+		case "h":
+			printOptions();
+			break;
+		case "1": //print memory
+		case "m":
+		case "mem":
+		case "print":
 			printMem(mem);
 			break;
-		case 2: //quit
+		case "2": //quit
+		case "q":
+		case "quit":
 			working = false;
 			break;
-		case 3: //submit
+		case "3": //submit
+		case "s":
+		case "sub":
+		case "submit":
+		case "add":
 			System.out.print("Submit ");
 			while(submitting) {
 				System.out.println("Next: (type #done to quit)");
@@ -84,14 +105,19 @@ public class Brain {
 					mem.add(out);
 				}
 			}
+			submitting = true;
 			break;
-		case 4: //remove
+		case "4": //remove
+		case "rem":
+		case "remove":
 			System.out.println("Select:");
 			printMem(mem);
 			input = sc.nextInt();
 			mem.remove(input-1);
 			break;
-		case 5: //edit
+		case "5": //edit
+		case "e":
+		case "edit":
 			System.out.println("Select:");
 			printMem(mem);
 			input = sc.nextInt();
@@ -102,7 +128,11 @@ public class Brain {
 			next = sc.next();
 			mem.add(input,edit +" "+ next + sc.nextLine());
 			break;
-		case 6: //revised
+		case "6": //revised
+		case "r":
+		case "rev":
+		case "revise":
+		case "revised":
 			System.out.println("Select:");
 			printMem(mem);
 			input = sc.nextInt();
@@ -111,7 +141,9 @@ public class Brain {
 			next = today +" "+next.substring(10);
 			mem.addLast(next);
 			break;
-		case 7: //random
+		case "7": //random
+		case "rand":
+		case "random":
 			int rand = (int) Math.ceil(Math.random()*mem.size());
 			next = mem.get(rand);
 			System.out.println(next);
@@ -124,7 +156,7 @@ public class Brain {
 			case 1:
 				break;
 			case 2:
-				select(7);
+				select("7");
 				break;
 			case 3:
 				next = mem.remove(mem.indexOf(next));
@@ -134,20 +166,39 @@ public class Brain {
 			default:
 			}
 			break;
-		case 8: //iterate
+		case "8": //iterate
+		case "i":
+		case "iter":
+		case "iterate":
 			mem.addLast(mem.removeFirst());
 			break;
-		case 10: //print deep storage
+		case "9": //FIX ME
+		case "old":
+		case "oldest":
+			for(String s:mem) {
+				
+			}
+			break;
+		case "10": //print deep storage
+		case "d":
+		case "ds":
+		case "deep":
+		case "deepStorage":
 			printMem(deep);
 			break;
-		case 11: //add to deep storage
+		case "11": //add to deep storage
+		case "ad":
+		case "addDeep":
 			System.out.println("Select:");
 			printMem(mem);
 			input = sc.nextInt();
 			input--;
 			deep.add(mem.remove(input));
 			break;
-		case 12: //move to mem
+		case "12": //move to mem
+		case "rd":
+		case "remDeep":
+		case "removeDeep":
 			System.out.println("Select:");
 			printMem(deep);
 			input = sc.nextInt();
