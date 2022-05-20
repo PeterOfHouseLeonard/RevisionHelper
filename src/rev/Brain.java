@@ -17,8 +17,8 @@ public class Brain {
 	private static String next;
 	private static LocalDate today = LocalDate.now();
 	
-	static LinkedList<String> mem = new LinkedList<>();
-	static LinkedList<String> deep = new LinkedList<>();
+	static LinkedList<Poem> mem = new LinkedList<>();
+	static LinkedList<Poem> deep = new LinkedList<>();
 	
 	public static void main(String[] args) {
 		
@@ -28,9 +28,9 @@ public class Brain {
 			if(s.equals("deep"))
 				enterDeep = true;
 			else if(enterDeep)
-				deep.add(s);
+				deep.add(new Poem(s));
 			else
-				mem.add(s);
+				mem.add(new Poem(s));
 		}
 		
 		System.out.println("Today is "+today);
@@ -45,10 +45,17 @@ public class Brain {
 		}
 		
 		//put back into storage
-		LinkedList<String> out = new LinkedList<>(mem);
+		LinkedList<String> out = new LinkedList<>();
+		addAll(out,mem);
 		out.add("deep");
-		out.addAll(deep);
+		addAll(out,deep);
 		ret.write(out);
+	}
+	
+	public static void addAll(LinkedList<String> ll, LinkedList<Poem> lp) {
+		for(int i=0; i<lp.size(); i++) {
+			ll.add(lp.get(i).toString());
+		}
 	}
 
 	private static void printOptions() {
@@ -102,7 +109,7 @@ public class Brain {
 				else {
 					String out = today + " " + next + sc.nextLine();
 					System.out.println(out);
-					mem.add(out);
+					mem.add(new Poem(out));
 				}
 			}
 			submitting = true;
@@ -123,10 +130,10 @@ public class Brain {
 			input = sc.nextInt();
 			input--;
 			System.out.println("New Input:");
-			String edit = mem.remove(input);
+			String edit = mem.remove(input).toString();
 			edit = edit.substring(0,10);
 			next = sc.next();
-			mem.add(input,edit +" "+ next + sc.nextLine());
+			mem.add(input,new Poem(edit +" "+ next + sc.nextLine()));
 			break;
 		case "6": //revised
 		case "r":
@@ -137,15 +144,15 @@ public class Brain {
 			printMem(mem);
 			input = sc.nextInt();
 			input--;
-			next = mem.remove(input);
+			next = mem.remove(input).toString();
 			next = today +" "+next.substring(10);
-			mem.addLast(next);
+			mem.addLast(new Poem(next));
 			break;
 		case "7": //random
 		case "rand":
 		case "random":
 			int rand = (int) Math.ceil(Math.random()*mem.size());
-			next = mem.get(rand);
+			next = mem.get(rand).toString();
 			System.out.println(next);
 			System.out.println("What would you like to do?");
 			System.out.println("1. Ignore");
@@ -159,9 +166,9 @@ public class Brain {
 				select("7");
 				break;
 			case 3:
-				next = mem.remove(mem.indexOf(next));
+				next = mem.remove(mem.indexOf(next)).toString();
 				next = today +" "+next.substring(10);
-				mem.addLast(next);
+				mem.addLast(new Poem(next));
 				break;
 			default:
 			}
@@ -172,12 +179,24 @@ public class Brain {
 		case "iterate":
 			mem.addLast(mem.removeFirst());
 			break;
-		case "9": //FIX ME
+		case "9":
 		case "old":
 		case "oldest":
-			for(String s:mem) {
-				
+			LinkedList<Poem> old = new LinkedList<>();
+			old.add(mem.getFirst());
+			int compare;
+			for(Poem s:mem) {
+				if(!old.getFirst().equals(s)) {
+					compare = old.getFirst().compareTo(s);
+					if(compare > 0) {
+						old.clear();
+						old.add(s);
+					}else if(compare == 0) {
+						old.add(s);
+					}
+				}
 			}
+			printMem(old);
 			break;
 		case "10": //print deep storage
 		case "d":
@@ -214,10 +233,10 @@ public class Brain {
 	 * Prints out an ArrayDeque with formatting
 	 * @param mem the ArrayDeque to be printed
 	 */
-	private static void printMem(LinkedList<String> mem) {
+	private static void printMem(LinkedList<Poem> mem) {
 		int index = 1;
-		for(String s : mem) {
-			System.out.println(index + ". " + s);
+		for(Poem s : mem) {
+			System.out.println(index + ". " + s.toString());
 			index++;
 		}
 	}

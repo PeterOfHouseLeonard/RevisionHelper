@@ -1,9 +1,20 @@
 package rev;
 
+/**
+ * Contains the data for a poem entry
+ * @author Peter Leonard
+ * Does not account for leap years
+ */
 public class Poem{
+	/**
+	 * the last date this poem was changed
+	 */
 	private int year, month, day;
+	/**
+	 * this poem's title
+	 */
 	private String title;
-	private int LeapYears = 0;
+	
 	
 	public Poem(String input) {
 		year = Integer.valueOf(input.substring(0,4));
@@ -12,14 +23,24 @@ public class Poem{
 		title = input.substring(11);	
 	}
 
+	/**
+	 * compares the date values of two poems
+	 * @param p the poem this one is being compared to
+	 * @return int difference
+	 */
 	public int compareTo(Poem p) {
 		int difference = 0;
-		difference += ((this.year - p.year)*365)+LeapYears;
+		difference += ((this.year - p.year)*365);
 		difference += monthToDays(this.month)-monthToDays(p.month);
 		difference += this.day - p.day;
 		return difference;
 	}
 	
+	/**
+	 * changes the month to its equivalent value in days
+	 * @param month the month to be changed
+	 * @return number of days since beginning of year
+	 */
 	public int monthToDays(int month) {
 		int days = 0;
 		for(int i=0; i<month; i++) {
@@ -32,5 +53,9 @@ public class Poem{
 			}
 		}
 		return days;
+	}
+	
+	public String toString() {
+		return year +"-"+ month +"-"+ day +" "+ title;
 	}
 }
